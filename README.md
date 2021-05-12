@@ -5,3 +5,4 @@ ___
 Полезыне ссылки:
 1. Методы для создание записи - https://vk.com/dev/wall.post
 2. Unsplash фото api - https://unsplash.com/documentation
+3. vk_api - https://github.com/python273/vk_api
