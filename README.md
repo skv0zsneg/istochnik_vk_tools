@@ -1,4 +1,3 @@
-# shame_vk
+# istochnik_vk_tools
 ___
-Удаление всех комментариев в vk.com при помощи парснига html файлов из архива вк. 
-*Архив можно получить [здесь](https://vk.com/data_protection?section=rules)*
+Набор разных фич для группы [ИСТОЧНИК](https://vk.com/sourcem) во вконтакте.
