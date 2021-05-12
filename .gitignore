@@ -1,3 +1,2 @@
-vk/
-index.html
-style.css
+utils/secret.py
+venv
