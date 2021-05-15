@@ -99,12 +99,12 @@ class PhotoResponseWrapper:
         if self.code == 200:
             self.body = json.loads(raw_response.text)
             self.photos = {'download_links': [], 'descriptions': []}
-            if isinstance(self.body, list): # если несколько фото
+            if isinstance(self.body, list):  # если несколько фото
                 for ph in self.body:
                     self.photos['descriptions'].append(ph['description'])
-                    self.photos['download_links'].append(ph['links']['download'])
+                    self.photos['download_links'].append(ph['urls']['full'])
             else:
                 self.photos['descriptions'].append(self.body['description'])
-                self.photos['download_links'].append(self.body['links']['download'])
+                self.photos['download_links'].append(self.body['urls']['full'])
         else:
             raise NotOkException(f"Не могу получить фото. HTML код {self.code}")

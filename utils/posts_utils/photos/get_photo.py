@@ -1,6 +1,7 @@
 """
     made by @skvozsneg
 """
+import os
 import random
 import requests
 
@@ -25,7 +26,7 @@ class GetPhoto:
         collections_name = ['film', 'architecture', 'interiors', 'street-photography', 'travel', 'textures-patterns', 'Motion_blur']
         random_params = {
             'query': collections_name[random.randint(0, len(collections_name) - 1)],
-            'count': str(random.randint(1, 5))
+            'count': '5'
         }
 
         random_params.update(self.params)
@@ -33,11 +34,30 @@ class GetPhoto:
         return PhotoResponseWrapper(response)
 
 
+def get_files_from_links():
+    """
+        Возвращает путь до фото.
+    """
+    ph = GetPhoto()
+    random_photo = ph.get_random_photo()
+    for i in range(len(random_photo.photos['download_links'])):
+        response = requests.get(random_photo.photos['download_links'][i])
+        file_name = f'temp-{i}.jpg'
+        with open(file_name, 'wb') as wb:
+            wb.write(response.content)
+            yield f"{os.path.join(os.path.abspath('.'), file_name)}"
+
+
 def main():
     ph = GetPhoto()
     random_photo = ph.get_random_photo()
-    print(random_photo.photos)
+    for i in range(len(random_photo.photos['download_links'])):
+        response = requests.get(random_photo.photos['download_links'][0])
+        print(response)
+        with open('temp.jpg', 'wb') as wb:
+            wb.write(response.content)
+    # get_files_from_links()
 
 
 if __name__ == "__main__":
-    main()
+     main()
