@@ -4,6 +4,7 @@
 import requests
 
 from utils.connection import vk, VkUpload
+from utils.posts_utils.time_generator import GetTime
 from utils.response.vk_wrappers import VkPhotoUploadWrapper
 from utils.posts_utils.photos.get_photo import GetPhoto, get_files_from_links
 
@@ -25,15 +26,21 @@ def save_into_album():
     return VkPhotoUploadWrapper(response)
 
 
-def create_post(photos: VkPhotoUploadWrapper):
+def create_post(photos: VkPhotoUploadWrapper, days):
+    time = GetTime()
     print(vk.wall.post(
         owner_id=OWNER_ID,
         from_group=1,
         message='#music@sourcem',
         attachments=','.join(photos.vk_photo_links),
-        publish_date=1639770911)
+        publish_date=time.random_am_timestamp(days=days))
     )
 
 
+def launch_posting(days):
+    for day in range(days):
+        create_post(save_into_album(), days=day)
+
+
 if __name__ == "__main__":
-    create_post(save_into_album())
+    launch_posting(days=5)
