@@ -46,18 +46,3 @@ def get_files_from_links():
         with open(file_name, 'wb') as wb:
             wb.write(response.content)
             yield f"{os.path.join(os.path.abspath('.'), file_name)}"
-
-
-def main():
-    ph = GetPhoto()
-    random_photo = ph.get_random_photo()
-    for i in range(len(random_photo.photos['download_links'])):
-        response = requests.get(random_photo.photos['download_links'][0])
-        print(response)
-        with open('temp.jpg', 'wb') as wb:
-            wb.write(response.content)
-    # get_files_from_links()
-
-
-if __name__ == "__main__":
-     main()
