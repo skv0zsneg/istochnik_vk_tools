@@ -1,13 +1,23 @@
-import time
+import enum
 import random
 
 from datetime import datetime, timedelta
 
 
+class TimeEnum(enum.Enum):
+    EARLY_MORNING = (0, 5)
+    MORNING = (6, 11)
+    DAY = (12, 16)
+    EVENING = (17, 20)
+    NIGHT = (21, 23)
+
+    def __init__(self, hour_from, hour_to):
+        self.hour_from = hour_from
+        self.hour_to = hour_to
+
+
 class GetTime:
-    """
-        Возвращает время в timestamp.
-    """
+    """Класс для работы со верменем для постов."""
     def __init__(
             self,
             year=None,
@@ -28,18 +38,24 @@ class GetTime:
 
         self.today_timestamp = datetime.timestamp(self.today)
 
-    def random_am_timestamp(self, day_from, dx):
-        """Возвращает случайное время в первой половине дня.
-
-            :params day_from: Смешение от сегодня для определения дня, с которого будут создаваться посты.
+    def random_timestamp(self, day_from, dx, _time):
+        """Возвращает случайное время в диапазоне от _time.
+        
+            :params day_from: Дата (в timestamp), с которой будут создаваться посты.
+            :type day_from: int
             :params dx: Смещение от сегодня + day_from для получения очередного дня.
+            :type dx: int
+            :params time: Диапазон часов в который попавдает создаваемый пост.
+            :type _time: TimeEnum
         """
+        cur_time = datetime(
+            year=self.year,
+            month=self.month,
+            day=self.day,
+            hour=random.randint(_time.hour_from, _time.hour_to),
+            minute=random.randint(0, 59),
+            second=self.second
+        )
+        time_dx = cur_time + timedelta(days=day_from.days + dx)
 
-        cur_time = datetime(self.year, self.month, self.day, random.randint(7, 12), random.randint(0, 59), self.second)
-        time_dx = cur_time + timedelta(days=day_from + dx)
         return datetime.timestamp(time_dx)
-
-
-if __name__ == "__main__":
-    s = GetTime()
-    print(s.random_am_timestamp(7, 4))
