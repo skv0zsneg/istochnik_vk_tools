@@ -1,7 +1,7 @@
 """
     made by @skvozsneg
 """
-import time
+import os
 
 from datetime import datetime
 
@@ -16,20 +16,21 @@ from utils.posts_utils.photos.get_photo import get_files_from_links
 
 
 def save_into_album():
-    vk_upload = VkUpload(vk)
-    photos = [i for i in get_files_from_links()]
-    try:
-        response = vk_upload.photo(
-            photos=photos,
-            album_id=ALBUM_ID,
-            group_id=GROUP_ID
-        )
-        return VkPhotoUploadWrapper(response)
-    except ApiError as e:
-        print(f"Catch exceptions: {e}")
-        time_out(10)
-        print("Try again...")
-        return save_into_album()
+    while True:
+        vk_upload = VkUpload(vk)
+        photos = [i for i in get_files_from_links()]
+        try:
+            response = vk_upload.photo(
+                photos=photos,
+                album_id=ALBUM_ID,
+                group_id=GROUP_ID
+            )
+            return VkPhotoUploadWrapper(response)
+        except ApiError as e:
+            print(f"Catch exceptions: {e}")
+            time_out(10)
+            print("Try again...")
+            continue
 
 
 def create_post(vk_photo_links, day_from, dx, _time):
@@ -64,11 +65,10 @@ def create_ph_posts(date_from, day_count, _time):
     for i, dx in enumerate(range(day_count + 2)):  # Получившийся day_from отстает на один день.
         ph = save_into_album()
 
-        print(f"{i}: Вк ссылки на фото в альбоме: ", end="")
+        print(f"{i + 1}: Вк ссылки на фото в альбоме: ", end="")
         print(ph.vk_photo_links)
 
         create_post(ph.vk_photo_links, day_from, dx, _time)
-
 
 
 if __name__ == "__main__":
